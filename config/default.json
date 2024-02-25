@@ -1,0 +1,17 @@
+{
+    "server": {
+        "host": "localhost",
+        "port": 5000 
+    },
+    "db": {
+        "user": "note_user",
+        "password": "note_user_password",
+        "host": "localhost",
+        "database": "note_db",
+        "port": 5432,
+        "max": 5
+    },
+    "bcrypt": {
+        "salt_rounds": 10
+    }
+}

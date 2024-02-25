@@ -1,0 +1,54 @@
+CREATE DATABASE note_db
+    WITH
+    OWNER = postgres
+    ENCODING = 'UTF8'
+    LOCALE_PROVIDER = 'libc'
+    CONNECTION LIMIT = -1
+    IS_TEMPLATE = False;
+
+CREATE TABLE note_user(
+	user_id SERIAL PRIMARY KEY,
+	user_email TEXT UNIQUE NOT NULL,
+	user_nickname VARCHAR(30) NOT NULL,
+	user_password_hash TEXT NOT NULL
+);
+
+CREATE TABLE note_group(
+	group_id SERIAL PRIMARY KEY,
+	group_name VARCHAR(30) NOT NULL,
+	group_user_id INTEGER NOT NULL,
+	group_creation_time TIMESTAMP NOT NULL,
+	group_last_update_time TIMESTAMP NOT NULL,
+	FOREIGN KEY (group_user_id) 
+		REFERENCES note_user (user_id) 
+		ON DELETE CASCADE 
+		ON UPDATE CASCADE,
+	UNIQUE(group_user_id, group_name)
+);
+
+CREATE TABLE note_note(
+	note_group_id INTEGER NOT NULL,	
+	note_title VARCHAR(30) NOT NULL,
+	note_text VARCHAR(2000) NOT NULL,
+	note_creation_time TIMESTAMP NOT NULL,
+	note_last_update_time TIMESTAMP NOT NULL,
+	FOREIGN KEY (note_group_id) 
+		REFERENCES note_group (group_id) 
+		ON DELETE CASCADE 
+		ON UPDATE CASCADE,
+	PRIMARY KEY(note_group_id, note_title)
+);
+
+ALTER TABLE note_note ADD COLUMN note_id SERIAL;
+ALTER TABLE note_note DROP CONSTRAINT note_note_pkey;
+ALTER TABLE note_note ADD PRIMARY KEY (note_id);
+ALTER TABLE note_note ADD UNIQUE (note_group_id, note_title);
+
+CREATE USER note_user WITH PASSWORD 'note_user_password';
+GRANT ALL PRIVILEGES ON DATABASE "note_db" to note_user;
+GRANT ALL PRIVILEGES ON TABLE "note_user" to note_user;
+GRANT ALL PRIVILEGES ON TABLE "note_group" to note_user;
+GRANT ALL PRIVILEGES ON TABLE "note_note" to note_user;
+GRANT ALL ON SEQUENCE public.note_group_group_id_seq TO note_user;
+GRANT ALL ON SEQUENCE public.note_user_user_id_seq TO note_user;
+GRANT ALL ON SEQUENCE public.note_note_note_id_seq TO note_user;
