@@ -39,6 +39,19 @@ CREATE TABLE note_note(
 	PRIMARY KEY(note_group_id, note_title)
 );
 
+CREATE TABLE note_refresh_token(
+	refresh_token_id SERIAL PRIMARY KEY,
+	refresh_token_user_id INTEGER NOT NULL,
+	refresh_token_token VARCHAR(300) NOT NULL,
+	refresh_token_creation_time TIMESTAMP NOT NULL,
+	refresh_token_expiration_time TIMESTAMP NOT NULL,
+	FOREIGN KEY (refresh_token_user_id)
+		REFERENCES note_user (user_id)
+		ON DELETE CASCADE 
+		ON UPDATE CASCADE
+);
+
+ALTER TABLE note_refresh_token ADD CONSTRAINT note_refresh_token_user_id_uniq UNIQUE (refresh_token_token, refresh_token_user_id);
 ALTER TABLE note_note ADD COLUMN note_id SERIAL;
 ALTER TABLE note_note DROP CONSTRAINT note_note_pkey;
 ALTER TABLE note_note ADD PRIMARY KEY (note_id);
@@ -49,6 +62,8 @@ GRANT ALL PRIVILEGES ON DATABASE "note_db" to note_user;
 GRANT ALL PRIVILEGES ON TABLE "note_user" to note_user;
 GRANT ALL PRIVILEGES ON TABLE "note_group" to note_user;
 GRANT ALL PRIVILEGES ON TABLE "note_note" to note_user;
-GRANT ALL ON SEQUENCE public.note_group_group_id_seq TO note_user;
-GRANT ALL ON SEQUENCE public.note_user_user_id_seq TO note_user;
-GRANT ALL ON SEQUENCE public.note_note_note_id_seq TO note_user;
+GRANT ALL PRIVILEGES ON TABLE "note_refresh_token" to note_user;
+GRANT ALL ON SEQUENCE note_group_group_id_seq TO note_user;
+GRANT ALL ON SEQUENCE note_user_user_id_seq TO note_user;
+GRANT ALL ON SEQUENCE note_note_note_id_seq TO note_user;
+GRANT ALL ON SEQUENCE note_refresh_token_refresh_token_id_seq TO note_user;

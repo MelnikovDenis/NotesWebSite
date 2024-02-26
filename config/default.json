@@ -13,5 +13,12 @@
     },
     "bcrypt": {
         "salt_rounds": 10
+    },
+    "access_token": {
+        "lifetime": 86400,
+        "secret_key": "7d7c1962-5f9f-4f11-9968-b6ccd638ebda"
+    },
+    "refresh_token": {
+        "lifetime": 2592000
     }
 }
