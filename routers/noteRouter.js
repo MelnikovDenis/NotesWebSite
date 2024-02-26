@@ -1,10 +1,12 @@
 import { Router } from 'express';
+import noteController from '../controllers/noteController.js';
+
 const noteRouter = new Router();
 
-//note_router.get('/:group_id');
-//note_router.get('/:group_id&:note_title');
-//note_router.post('/');
-//note_router.put('/');
-//note_router.delete('/');
+noteRouter.post('/', noteController.create);
+noteRouter.get('/:group_id', noteController.readMany);
+noteRouter.get('/:note_id', noteController.readOne);
+noteRouter.put('/', noteController.update);
+noteRouter.delete('/', noteController.delete);
 
 export default noteRouter;

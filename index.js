@@ -3,6 +3,7 @@ import config from 'config';
 import userRouter from './routers/userRouter.js';
 import groupRouter from './routers/groupRouter.js';
 import noteRouter from './routers/noteRouter.js';
+import userRepository from './persistence/reposotories/userRepository.js';
 
 const SERVER_PORT = config.get('server.port');
 const SERVER_HOST = config.get('server.host');
@@ -17,7 +18,7 @@ app.use('/notes', noteRouter);
 await startApp();
 
 async function startApp() {
-    try {       
+    try {
         app.listen(SERVER_PORT, 
             SERVER_HOST, 
             () => console.log(`Server is running on ${SERVER_HOST}:${SERVER_PORT}`));

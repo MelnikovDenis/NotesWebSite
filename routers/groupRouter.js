@@ -1,10 +1,12 @@
 import { Router } from 'express';
+import groupController from '../controllers/groupController.js';
+
 const groupRouter = new Router();
 
-//group_router.get('/');
-//group_router.get('/:group_id');
-//group_router.post('/');
-//group_router.put('/');
-//group_router.delete('/');
+groupRouter.post('/', groupController.create);
+groupRouter.get('/:user_id', groupController.readMany);
+groupRouter.get('/:group_id', groupController.readOne);
+groupRouter.put('/', groupController.update);
+groupRouter.delete('/', groupController.delete);
 
 export default groupRouter;

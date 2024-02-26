@@ -11,7 +11,7 @@ class UserRepository {
     }
     
     async createUser(email, password, nickname) {
-        const passwordHash = await bcrypt.hash(password, this.SALT_ROUNDS);
+        const passwordHash = await bcrypt.hash(password, this.saltRounds);
         const paramQuery = {
             text: 'INSERT INTO note_user(user_email, user_nickname, user_password_hash) VALUES($1, $2, $3)',
             values: [email, nickname, passwordHash]
@@ -30,7 +30,7 @@ class UserRepository {
     }
 
     async updateUser(userId, email, password, nickname) {
-        const passwordHash = await bcrypt.hash(password, this.SALT_ROUNDS);
+        const passwordHash = await bcrypt.hash(password, this.saltRounds);
         const paramQuery = {
             text: 'UPDATE note_user SET user_email = $1, user_nickname = $2, user_password_hash = $3 WHERE user_id = $4',
             values: [email, nickname, passwordHash, userId]
