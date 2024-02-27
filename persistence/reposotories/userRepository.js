@@ -18,17 +18,11 @@ class UserRepository {
             text: 'INSERT INTO note_user(user_email, user_nickname, user_password_hash) VALUES($1, $2, $3) RETURNING *',
             values: [email, nickname, passwordHash]
         };
-
-        try {
-            const result = await query(paramQuery);
-            return new User(result.rows[0][0], result.rows[0][1], result.rows[0][2], result.rows[0][3]);
-        }
-        catch(error) {
-            if(error.code == '23505')
-                throw new AlreadyExistsError();
-            else
-                throw new UnknownDatabaseError();
-        }
+        const result = await query(paramQuery);
+        return new User(result.rows[0][0], 
+            result.rows[0][1], 
+            result.rows[0][2], 
+            result.rows[0][3]);
     }
 
     async readUser(email) {
@@ -38,34 +32,44 @@ class UserRepository {
             values: [email]
         };
         const result = await query(paramQuery);
-
-        if(result.rowCount == 0)
-            throw new NotFoundError();
-
-        return new User(result.rows[0][0], result.rows[0][1], result.rows[0][3], result.rows[0][2]);
+        if(result.rowCount > 0)
+            return new User(result.rows[0][0], 
+                result.rows[0][1], 
+                result.rows[0][3], 
+                result.rows[0][2]);
+        else
+            return null;
     }
 
     async updateUser(userId, email, password, nickname) {
         const passwordHash = await bcrypt.hash(password, this.saltRounds);
         const paramQuery = {
-            text: 'UPDATE note_user SET user_email = $1, user_nickname = $2, user_password_hash = $3 WHERE user_id = $4',
+            text: 'UPDATE note_user SET user_email = $1, user_nickname = $2, user_password_hash = $3 WHERE user_id = $4 RETURNING *',
             values: [email, nickname, passwordHash, userId]
         };
         const result = await query(paramQuery);
-
-        if(result.rowCount == 0)
-            throw new NotFoundError();
+        if(result.rowCount > 0)
+            return new User(result.rows[0][0], 
+                result.rows[0][1], 
+                result.rows[0][3], 
+                result.rows[0][2]);
+        else
+            return null;
     }
 
     async deleteUser(userId) {
         const paramQuery = {
-            text: 'DELETE FROM note_user WHERE user_id = $1',
+            text: 'DELETE FROM note_user WHERE user_id = $1 RETURNING *',
             values: [userId]
         };
         const result = await query(paramQuery);
-
-        if(result.rowCount == 0)
-            throw new NotFoundError();
+        if(result.rowCount > 0)
+            return new User(result.rows[0][0], 
+                result.rows[0][1], 
+                result.rows[0][3], 
+                result.rows[0][2]);
+        else
+            return null;
     }
 }
 

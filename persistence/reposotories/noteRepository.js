@@ -1,6 +1,5 @@
 import { Note } from "../../models/Note.js";
 import { query } from '../db.js';
-import { AlreadyExistsError, NotFoundError,  UnknownDatabaseError } from '../../errors/CustomErrors.js';
 
 class NoteRepository {
     constructor() {
@@ -12,17 +11,13 @@ class NoteRepository {
             text: 'INSERT INTO note_note(note_group_id, note_title, note_text, note_creation_time, note_last_update_time) VALUES($1, $2, $3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) RETURNING *',
             values: [groupId, noteTitle, noteText]
         };
-
-        try {
-            const result = await query(paramQuery);
-            return new Note(result.rows[0][5], result.rows[0][0], result.rows[0][1], result.rows[0][2], result.rows[0][3], result.rows[0][4]);
-        }
-        catch(error) {
-            if(error.code == '23505')
-                throw new AlreadyExistsError();
-            else
-                throw new UnknownDatabaseError();
-        }
+        const result = await query(paramQuery);
+        return new Note(result.rows[0][5], 
+            result.rows[0][0], 
+            result.rows[0][1], 
+            result.rows[0][2], 
+            result.rows[0][3], 
+            result.rows[0][4]);
     }
 
     async readNotes(groupId) {
@@ -46,33 +41,49 @@ class NoteRepository {
             values: [noteId]
         };
         const result = await query(paramQuery);
-
-        if(result.rowCount == 0)
-            throw new NotFoundError();
-
-        return new Note(result.rows[0][0], result.rows[0][1], result.rows[0][2], result.rows[0][3], result.rows[0][4], result.rows[0][5]);
+        if(result.rowCount > 0)
+            return new Note(result.rows[0][0], 
+                result.rows[0][1], 
+                result.rows[0][2], 
+                result.rows[0][3], 
+                result.rows[0][4], 
+                result.rows[0][5]);
+        else
+            return null;
     }
 
     async updateNote(groupId, newNoteTitle, oldNoteTitle, noteText) {
         const paramQuery = {
-            text: 'UPDATE note_note SET note_title = $1, note_text = $2, group_last_update_time = CURRENT_TIMESTAMP WHERE note_group_id = $3 AND note_title = $4',
+            text: 'UPDATE note_note SET note_title = $1, note_text = $2, group_last_update_time = CURRENT_TIMESTAMP WHERE note_group_id = $3 AND note_title = $4 RETURNING *',
             values: [newNoteTitle, noteText, groupId, oldNoteTitle]
         };
         const result = await query(paramQuery);
-
-        if(result.rowCount == 0)
-            throw new NotFoundError();
+        if(result.rowCount > 0)
+            return new Note(result.rows[0][5], 
+                result.rows[0][0], 
+                result.rows[0][1], 
+                result.rows[0][2], 
+                result.rows[0][3], 
+                result.rows[0][4]);
+        else
+            return null;
     }
 
     async deleteNote(noteId) {
         const paramQuery = {
-            text: 'DELETE FROM note_note WHERE note_id = $1',
+            text: 'DELETE FROM note_note WHERE note_id = $1 RETURNING *',
             values: [noteId]
         };
         const result = await query(paramQuery);
-
-        if(result.rowCount == 0)
-            throw new NotFoundError();
+        if(result.rowCount > 0)
+            return new Note(result.rows[0][5], 
+                result.rows[0][0], 
+                result.rows[0][1], 
+                result.rows[0][2], 
+                result.rows[0][3], 
+                result.rows[0][4]);
+        else
+            return null;
     }
 }
 

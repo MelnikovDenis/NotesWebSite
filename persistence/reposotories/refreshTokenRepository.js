@@ -13,23 +13,17 @@ class RefreshTokenRepository {
 
       async create(userId) {
             var token = v4();
-
             const paramQuery = {
                   rowMode: 'array',
                   text: 'INSERT INTO note_refresh_token(refresh_token_user_id, refresh_token_token, refresh_token_creation_time, refresh_token_expiration_time) VALUES($1, $2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + $3) RETURNING *',
                   values: [userId, token, this.lifetime]
             };
-
-            try {
-                  const result = await query(paramQuery);
-                  return new RefreshToken(result.rows[0][0], result.rows[0][1], result.rows[0][2], result.rows[0][3], result.rows[0][4]);
-            }
-            catch(error) {
-                  if(error.code == '23505')
-                        throw new AlreadyExistsError();
-                  else
-                        throw new UnknownDatabaseError();
-            }
+            const result = await query(paramQuery);
+            return new RefreshToken(result.rows[0][0], 
+                  result.rows[0][1], 
+                  result.rows[0][2], 
+                  result.rows[0][3], 
+                  result.rows[0][4]);
       }
 
       async read(userId, token) {
@@ -39,22 +33,30 @@ class RefreshTokenRepository {
                   values: [userId, token]
             };
             const result = await query(paramQuery);
-            
-            if(result.rowCount == 0)
-                  throw new NotFoundError();        
-
-            return new RefreshToken(result.rows[0][0], result.rows[0][1], result.rows[0][2], result.rows[0][3], result.rows[0][4]);
+            if(result.rowCount > 0)
+                  return new RefreshToken(result.rows[0][0], 
+                        result.rows[0][1], 
+                        result.rows[0][2], 
+                        result.rows[0][3], 
+                        result.rows[0][4]);
+            else
+                  return null;
       }
 
       async delete(userId, token) {
             const paramQuery = {
-                  text: 'DELETE FROM note_refresh_token WHERE refresh_token_user_id = $1 AND refresh_token_token = $2',
+                  text: 'DELETE FROM note_refresh_token WHERE refresh_token_user_id = $1 AND refresh_token_token = $2 RETURNING *',
                   values: [userId, token]
             };
             const result = await query(paramQuery);
-
-            if(result.rowCount == 0)
-                  throw new NotFoundError();
+            if(result.rowCount > 0)
+                  return new RefreshToken(result.rows[0][0], 
+                        result.rows[0][1], 
+                        result.rows[0][2], 
+                        result.rows[0][3], 
+                        result.rows[0][4]);
+            else
+                  return null;
       }
 }
 

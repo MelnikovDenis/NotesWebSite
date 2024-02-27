@@ -14,7 +14,15 @@ app.use(express.json());
 app.use('/users', userRouter);
 app.use('/groups', groupRouter);
 app.use('/notes', noteRouter);
-
+app.use(function(err, req, res, next) {
+    if(err?.statusCode) {
+        res.status(err.statusCode).json({name: err.name, message: err.message});
+    }
+    else {
+        console.log(err);
+        res.status(500).json({name: 'UNKNOWN_INTERNAL_ERROR', message: 'Unknown internal server error' });
+    }
+});
 
 await startApp();
 

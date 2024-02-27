@@ -1,6 +1,5 @@
 import { Group } from "../../models/Group.js";
 import { query } from '../db.js';
-import { AlreadyExistsError, NotFoundError,  UnknownDatabaseError } from '../../errors/CustomErrors.js';
 
 class GroupRepository {
     constructor() {
@@ -13,17 +12,12 @@ class GroupRepository {
             text: 'INSERT INTO note_group(group_user_id, group_name, group_creation_time, group_last_update_time) VALUES($1, $2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP) RETURNING *',
             values: [groupUserId, groupName]
         };
-
-        try {
-            const result = await query(paramQuery);
-            return new Group(result.rows[0][0], result.rows[0][2], result.rows[0][1],result.rows[0][3], result.rows[0][4]);
-        }
-        catch(error) {
-            if(error.code == '23505')
-                throw new AlreadyExistsError();
-            else
-                throw new UnknownDatabaseError();
-        }
+        const result = await query(paramQuery);
+        return new Group(result.rows[0][0], 
+            result.rows[0][2], 
+            result.rows[0][1],
+            result.rows[0][3], 
+            result.rows[0][4]);
     }
 
     async readGroups(groupUserId) {
@@ -48,32 +42,46 @@ class GroupRepository {
         };
         const result = await query(paramQuery);
 
-        if(result.rowCount == 0)
-            throw new NotFoundError();
-
-        return new Group(result.rows[0][0], result.rows[0][1], result.rows[0][2], result.rows[0][3], result.rows[0][4]);
+        if(result.rowCount > 0)
+            return new Group(result.rows[0][0], 
+                result.rows[0][1], 
+                result.rows[0][2], 
+                result.rows[0][3], 
+                result.rows[0][4]);
+        else
+            return null;
     }
 
     async updateGroup(groupId, groupName) {
         const paramQuery = {
-            text: 'UPDATE note_group SET group_name = $1, group_last_update_time = CURRENT_TIMESTAMP WHERE group_id = $2',
+            text: 'UPDATE note_group SET group_name = $1, group_last_update_time = CURRENT_TIMESTAMP WHERE group_id = $2 RETURNING *',
             values: [groupName, groupId]
         };
         const result = await query(paramQuery);
-
-        if(result.rowCount == 0)
-            throw new NotFoundError();
+        if(result.rowCount > 0)
+            return new Group(result.rows[0][0], 
+                result.rows[0][2], 
+                result.rows[0][1],
+                result.rows[0][3], 
+                result.rows[0][4]);
+        else
+            return null;
     }
 
     async deleteGroup(groupId) {
         const paramQuery = {
-            text: 'DELETE FROM note_group WHERE group_id = $1',
+            text: 'DELETE FROM note_group WHERE group_id = $1 RETURNING *',
             values: [groupId]
         };
         const result = await query(paramQuery);
-
-        if(result.rowCount == 0)
-            throw new NotFoundError();
+        if(result.rowCount > 0)
+            return new Group(result.rows[0][0], 
+                result.rows[0][2], 
+                result.rows[0][1],
+                result.rows[0][3], 
+                result.rows[0][4]);
+        else
+            return null;
     }
 };
 
