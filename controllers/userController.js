@@ -29,6 +29,8 @@ class UserController {
 
             User.checkPassword(newPassword);
             User.checkPassword(oldPassword);
+            User.checkEmail(newEmail);
+            User.checkNickname(nickname);
 
             const user = await userRepository.readUser(oldEmail);
             if(!user || !await bcrypt.compare(oldPassword, user.passwordHash) || id != user.id)
