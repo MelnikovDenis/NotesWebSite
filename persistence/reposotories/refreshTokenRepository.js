@@ -1,7 +1,6 @@
 import { query } from '../db.js';
 import { RefreshToken } from '../../models/RefreshToken.js';
 import config from 'config';
-import { AlreadyExistsError, NotFoundError,  UnknownDatabaseError } from '../../errors/CustomErrors.js';
 import { v4 } from 'uuid';
 
 class RefreshTokenRepository {

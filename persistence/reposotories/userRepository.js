@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt';
 import config from 'config';
-import { AlreadyExistsError, NotFoundError,  UnknownDatabaseError } from '../../errors/CustomErrors.js';
 import { User } from '../../models/User.js';
 import { query } from '../db.js';
 

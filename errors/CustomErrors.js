@@ -26,27 +26,28 @@ class NotFoundError extends BaseError {
 }
 
 class AuthenticationError extends BaseError {
-      constructor() {
-            super('AUTHENTICATION_ERROR', 'Incorrect email or password', 400);
+      constructor(message) {
+            super('AUTHENTICATION_ERROR', message, 401);
       }
 }
 
 class RequestDataError extends BaseError {
       constructor(message) {
-            super('DATA_TYPE_ERROR', message, 400);
+            super('REQUEST_DATA_ERROR', message, 400);
       }
 }
 
-class UnknownDatabaseError extends BaseError {
-      constructor() {
-            super('UNKNOWN_DATABASE_ERROR', 'Unknown database error', 500);
+class InternalServerError extends BaseError {
+      constructor(message) {
+            super('INTERNAL_SERVER_ERROR', message, 500);
       }
 }
 
 export { 
+      BaseError,
+      InternalServerError,
       AlreadyExistsError, 
       NotFoundError, 
-      UnknownDatabaseError,
       RequestDataError,
       AuthenticationError
 };

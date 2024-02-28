@@ -5,23 +5,23 @@ class GroupController {
 
     }
 
-    async create(req, res) {
+    async create(req, res, next) {
 
     }
 
-    async readMany(req, res) {
+    async readMany(req, res, next) {
 
     }
 
-    async readOne(req, res) {
+    async readOne(req, res, next) {
 
     }
 
-    async update(req, res) {
+    async update(req, res, next) {
 
     }
 
-    async delete(req, res) {
+    async delete(req, res, next) {
 
     }
 }
