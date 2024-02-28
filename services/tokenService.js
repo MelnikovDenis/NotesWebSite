@@ -1,5 +1,8 @@
 import jwt from 'jsonwebtoken';
 import config from 'config';
+import refreshTokenRepository from '../persistence/reposotories/refreshTokenRepository';
+import { AuthenticationError } from '../errors/CustomErrors.js';
+import { RefreshToken } from '../models/RefreshToken.js';
 
 class TokenService {
       lifetime;
@@ -22,11 +25,13 @@ class TokenService {
             return decoded;
       }
       async verifyRefreshToken(userId, oldRefreshToken) {
-            const refreshToken = await refreshTokenRepository.delete(userId, oldRefreshToken);
-            if(refreshToken?.expirationTime > Date.now())
-                  return true;
-            else
-                  return false;
+            RefreshToken.checkToken(oldRefreshToken);
+
+            const refreshToken = await refreshTokenRepository.read(userId, oldRefreshToken);
+            if(!refreshToken || refreshToken.expirationTime > Date.now())
+                  throw new AuthenticationError('Incorrect refresh token');
+
+            await refreshTokenRepository.delete(userId, oldRefreshToken);
       }
 }
 

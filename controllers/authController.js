@@ -4,6 +4,7 @@ import refreshTokenRepository from '../persistence/reposotories/refreshTokenRepo
 import tokenService from '../services/tokenService.js';
 import { User } from '../models/User.js'
 import { AlreadyExistsError, AuthenticationError } from '../errors/CustomErrors.js'; 
+import { verify } from 'jsonwebtoken';
 
 class AuthController {
       async register(req, res, next) {        
@@ -46,13 +47,15 @@ class AuthController {
       async refresh(req, res, next) {
             try{
                   const oldRefreshToken = req.cookies?.refreshToken;
-                  if(typeof(oldRefreshToken) != 'string')
-                        throw new RequestDataError('Request cookie must contain refresh token and token must be a string');
                   const { id, email } = req.body;        
                   User.checkId(id);
                   User.checkEmail(email);
+
+                  await tokenService.verifyRefreshToken(id, oldRefreshToken);
+
                   const newRefreshToken = await refreshTokenRepository.create(id);
                   const newAccessToken = tokenService.createAccessToken(id, email);
+
                   res.cookie('refreshToken', newRefreshToken.token, { expires: newRefreshToken.expirationTime, httpOnly: true, secure: true });
                   res.status(200).json(newAccessToken);
             }
@@ -65,8 +68,21 @@ class AuthController {
                         next(error);
             }        
       }
-      
+
       async logout(req, res, next) {
+            try {
+                  const id = res.locals.id;
+                  const oldRefreshToken = req.cookies?.refreshToken;
+
+                  await tokenService.verifyRefreshToken(id, oldRefreshToken);
+                  
+                  res.clearCookie('refreshToken');
+                  res.status(200).send();
+            }
+            catch(error) {
+                  next(error);
+            }
+            
 
       } 
 }

@@ -11,4 +11,9 @@ export class RefreshToken {
             this.creationTime = creationTime;
             this.expirationTime = expirationTime;
       }
+      
+      static checkToken(token) {
+            if(typeof(token) != 'string' || token.length > 50)
+                  throw new RequestDataError('Request cookie must contain refresh token and token must be a string with length <= 50'); 
+      }
 }
