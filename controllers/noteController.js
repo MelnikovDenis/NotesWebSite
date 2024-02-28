@@ -6,23 +6,48 @@ class NoteController {
     }
 
     async create(req, res, next) {
+        try {
 
+        }
+        catch(error) {
+            
+        }
     }
 
     async readMany(req, res, next) {
+        try {
 
+        }
+        catch(error) {
+            
+        }
     }
 
     async readOne(req, res, next) {
+        try {
 
+        }
+        catch(error) {
+            
+        }
     }
 
     async update(req, res, next) {
+        try {
 
+        }
+        catch(error) {
+            
+        }
     }
 
     async delete(req, res, next) {
+        try {
 
+        }
+        catch(error) {
+            
+        }
     }
 }
 
