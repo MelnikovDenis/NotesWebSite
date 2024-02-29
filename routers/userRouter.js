@@ -4,7 +4,7 @@ import authenticationMiddleware from '../middlewares/authenticationMiddleware.js
 
 const userRouter = new Router();
 
-userRouter.post('/aboutme', authenticationMiddleware, userController.aboutme);
+userRouter.get('/', authenticationMiddleware, userController.aboutme);
 userRouter.put('/', authenticationMiddleware, userController.update);
 userRouter.delete('/', authenticationMiddleware, userController.delete);
 

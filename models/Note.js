@@ -1,4 +1,9 @@
+import { RequestDataError } from "../errors/CustomErrors.js";
+
 export class Note { 
+    static maxTitleLength = 100;
+    static maxTextLength = 2000;
+
     id;
     groupId;
     title;
@@ -13,5 +18,22 @@ export class Note {
         this.text = text;
         this.creationTime = creationTime;
         this.lastUpdateTime = lastUpdateTime;
+    }
+
+    static checkId(id) {
+        if(typeof(id) != 'number')
+            throw new RequestDataError('Request body must contain id and id must be a number');
+    }
+    static checkGroupId(groupId) {
+        if(typeof(groupId) != 'number')
+            throw new RequestDataError('Request body must contain groupId and userId must be a number');
+    }
+    static checkTitle(title) {
+        if(typeof(title) != 'string' || title.length > this.maxTitleLength)
+            throw new RequestDataError(`Request body must contain title and title must be a string with length <= ${this.maxTitleLength}`);
+    }
+    static checkText(text) {
+        if(typeof(text) != 'string' || text.length > this.maxTextLength)
+            throw new RequestDataError(`Request body must contain text and text must be a string with length <= ${this.maxTextLength}`);
     }
 }

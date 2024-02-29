@@ -1,0 +1,49 @@
+POST: /auth/register
+
+input JSON:
+email: string(300) requared
+nickname: string(50) requared
+password: string(30) requared
+
+
+
+POST: /auth/login
+
+input JSON:
+email: string(300) requared
+password: string(30) requared
+
+output text:
+accessToken
+
+output cookie:
+refreshToken
+
+
+
+POST: /auth/refresh
+
+input JSON:
+id: integer number requared
+email: string(300) requared
+
+input cookie:
+refreshToken
+
+output text:
+accessToken
+
+output cookie:
+refreshToken
+
+
+
+POST /auth/logout
+
+input JSON:
+id: integer number requared
+
+input cookie:
+refreshToken
+
+

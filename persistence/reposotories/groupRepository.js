@@ -28,8 +28,8 @@ class GroupRepository {
         };
         const result = await query(paramQuery);
         var groups = [];
-        for(i = 0; i < result.rowsCount; ++i) {
-            groups[i] = new Group(result.rows[i][0], result.rows[i][1], result.rows[i][2], result.rows[i][3], result.rows[i][4]);
+        for(var i = 0; i < result.rowCount; i++) {
+            groups.push(new Group(result.rows[i][0], result.rows[i][1], result.rows[i][2], result.rows[i][3], result.rows[i][4]));
         }
         return groups;
     }
@@ -54,34 +54,20 @@ class GroupRepository {
 
     async updateGroup(groupId, groupName) {
         const paramQuery = {
-            text: 'UPDATE note_group SET group_name = $1, group_last_update_time = CURRENT_TIMESTAMP WHERE group_id = $2 RETURNING *',
+            text: 'UPDATE note_group SET group_name = $1, group_last_update_time = CURRENT_TIMESTAMP WHERE group_id = $2',
             values: [groupName, groupId]
         };
         const result = await query(paramQuery);
-        if(result.rowCount > 0)
-            return new Group(result.rows[0][0], 
-                result.rows[0][2], 
-                result.rows[0][1],
-                result.rows[0][3], 
-                result.rows[0][4]);
-        else
-            return null;
+        return result.rowCount;
     }
 
     async deleteGroup(groupId) {
         const paramQuery = {
-            text: 'DELETE FROM note_group WHERE group_id = $1 RETURNING *',
+            text: 'DELETE FROM note_group WHERE group_id = $1',
             values: [groupId]
         };
         const result = await query(paramQuery);
-        if(result.rowCount > 0)
-            return new Group(result.rows[0][0], 
-                result.rows[0][2], 
-                result.rows[0][1],
-                result.rows[0][3], 
-                result.rows[0][4]);
-        else
-            return null;
+        return result.rowCount;
     }
 };
 

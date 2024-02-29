@@ -3,17 +3,19 @@ import userRepository from '../persistence/reposotories/userRepository.js';
 import refreshTokenRepository from '../persistence/reposotories/refreshTokenRepository.js';
 import tokenService from '../services/tokenService.js';
 import { User } from '../models/User.js'
-import { AlreadyExistsError, AuthenticationError } from '../errors/CustomErrors.js'; 
-import { verify } from 'jsonwebtoken';
+import { AlreadyExistsError, AuthenticationError, NotFoundError } from '../errors/CustomErrors.js'; 
 
 class AuthController {
       async register(req, res, next) {        
             try {
                   const { email, password, nickname } = req.body;
+
                   User.checkEmail(email);
                   User.checkPassword(password);
                   User.checkNickname(nickname);
+
                   const user = await userRepository.createUser(email, password, nickname);
+
                   res.status(200).json({id: user.id, email: user.email, nickname: user.nickname});
             }
             catch(error) {
@@ -27,6 +29,7 @@ class AuthController {
       async login(req, res, next) {
             try{
                   const { email, password } = req.body;
+
                   User.checkEmail(email);
                   User.checkPassword(password);
 
@@ -36,7 +39,11 @@ class AuthController {
 
                   const accessToken = tokenService.createAccessToken(user.id, user.email);
                   const newRefreshToken = await refreshTokenRepository.create(user.id);
-                  res.cookie('refreshToken', newRefreshToken.token, { expires: newRefreshToken.expirationTime, httpOnly: true });
+
+                  res.cookie('refreshToken', newRefreshToken.token, { 
+                        expires: newRefreshToken.expirationTime, 
+                        httpOnly: true, 
+                        secure: true });
                   res.status(200).json(accessToken);
             }
             catch(error) {
@@ -47,7 +54,8 @@ class AuthController {
       async refresh(req, res, next) {
             try{
                   const oldRefreshToken = req.cookies?.refreshToken;
-                  const { id, email } = req.body;        
+                  const { id, email } = req.body;
+
                   User.checkId(id);
                   User.checkEmail(email);
 
@@ -56,7 +64,10 @@ class AuthController {
                   const newRefreshToken = await refreshTokenRepository.create(id);
                   const newAccessToken = tokenService.createAccessToken(id, email);
 
-                  res.cookie('refreshToken', newRefreshToken.token, { expires: newRefreshToken.expirationTime, httpOnly: true, secure: true });
+                  res.cookie('refreshToken', newRefreshToken.token, { 
+                              expires: newRefreshToken.expirationTime, 
+                              httpOnly: true, 
+                              secure: true });
                   res.status(200).json(newAccessToken);
             }
             catch(error) {
@@ -71,7 +82,10 @@ class AuthController {
 
       async logout(req, res, next) {
             try {
-                  const id = res.locals.id;
+                  const { id } = req.body;
+                  
+                  User.checkId(id);
+
                   const oldRefreshToken = req.cookies?.refreshToken;
 
                   await tokenService.verifyRefreshToken(id, oldRefreshToken);
@@ -82,8 +96,6 @@ class AuthController {
             catch(error) {
                   next(error);
             }
-            
-
       } 
 }
 

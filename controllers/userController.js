@@ -11,9 +11,12 @@ class UserController {
     async aboutme(req, res, next) {
         try {
             const email = res.locals.email;
+
             const user = await userRepository.readUser(email);
+
             if(!user)
-                throw new NotFoundError('This user does not exist');
+                throw new NotFoundError('User was not found');
+
             res.status(200).json({id: user.id, email: user.email, nickname: user.nickname});
         }
         catch(error) {
@@ -25,19 +28,24 @@ class UserController {
         try {
             const id = res.locals.id;
             const oldEmail = res.locals.email;
-            const { new_password: newPassword, old_password: oldPassword, nickname, email: newEmail } = req.body;
+            const { new_password: newPassword, old_password: oldPassword, new_nickname: newNickname, new_email: newEmail } = req.body;
 
             User.checkPassword(newPassword);
             User.checkPassword(oldPassword);
             User.checkEmail(newEmail);
-            User.checkNickname(nickname);
+            User.checkNickname(newNickname);
 
             const user = await userRepository.readUser(oldEmail);
-            if(!user || !await bcrypt.compare(oldPassword, user.passwordHash) || id != user.id)
-                throw new AuthenticationError('Incorrect user data');
 
-            const updated = await userRepository.updateUser(id, newEmail, newPassword, nickname);
-            res.status(200).json({id: id, email: newEmail, nickname: nickname});
+            if(!user)
+                throw new NotFoundError('User was not found');
+
+            if(!await bcrypt.compare(oldPassword, user.passwordHash))
+                throw new AuthenticationError('Incorrect password');
+
+            await userRepository.updateUser(id, newEmail, newPassword, newNickname);
+
+            res.status(200).send();
         }
         catch(error) {
             next(error);
@@ -53,13 +61,18 @@ class UserController {
             User.checkPassword(password);
 
             const user = await userRepository.readUser(email);
-            if(!user || !await bcrypt.compare(password, user.passwordHash) || id != user.id)
-                throw new AuthenticationError('Incorrect user data');
+
+            if(!user)
+                throw new NotFoundError('User was not found');
+
+            if(!await bcrypt.compare(password, user.passwordHash))
+                throw new AuthenticationError('Incorrect password');
             
             await userRepository.deleteUser(id);
 
             res.clearCookie('refreshToken');
-            res.status(200).json({id: user.id, email: user.email, nickname: user.nickname});
+            
+            res.status(200).send();
         }
         catch(error) {
             next(error);

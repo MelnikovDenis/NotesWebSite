@@ -1,0 +1,51 @@
+POST /notes
+
+input AUTHORIZATION HEADER ("Bearer {accessToken}")
+
+input JSON:
+group_id: integer number requared
+title: string(100) requared
+text: string(2000) requared
+
+output JSON:
+id: integer number
+groupId: integer number
+title: string
+text: string
+creationTime: string with timestamp without timezone
+lastUpdateTime: string with timestamp without timezone
+
+
+
+GET /notes/:note_id
+
+input AUTHORIZATION HEADER ("Bearer {accessToken}")
+
+output JSON:
+id: integer number
+groupId: integer number
+title: string
+text: string
+creationTime: string with timestamp without timezone
+lastUpdateTime: string with timestamp without timezone
+
+
+
+PUT /notes
+
+input AUTHORIZATION HEADER ("Bearer {accessToken}")
+
+input JSON:
+note_id: integer number requared
+new_group_id: integer number requared
+new_title: string(100) requared
+new_text: string(2000) requared
+
+
+
+DELETE /notes
+
+input AUTHORIZATION HEADER ("Bearer {accessToken}")
+
+input JSON:
+note_id: integer number requared

@@ -1,0 +1,29 @@
+GET /users
+
+input AUTHORIZATION HEADER ("Bearer {accessToken}")
+
+output JSON:
+id: integer number
+email: string
+nickname: string
+
+
+
+PUT /users
+
+input AUTHORIZATION HEADER ("Bearer {accessToken}")
+
+input JSON:
+old_password: string(30) requared,
+new_password: string(30) requared,
+new_email: string(300) requared,
+new_nickname: string(50) requared
+
+
+
+DELETE /users
+
+input AUTHORIZATION HEADER ("Bearer {accessToken}")
+
+input JSON:
+password: string(30) requared

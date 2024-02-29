@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import config from 'config';
-import refreshTokenRepository from '../persistence/reposotories/refreshTokenRepository';
+import refreshTokenRepository from '../persistence/reposotories/refreshTokenRepository.js';
 import { AuthenticationError } from '../errors/CustomErrors.js';
 import { RefreshToken } from '../models/RefreshToken.js';
 
@@ -21,14 +21,20 @@ class TokenService {
             return accessToken;
       }
       verifyAccessToken(accessToken) {
-            var decoded = jwt.verify(accessToken, this.secretKey, { algorithms: ['HS512'] });
-            return decoded;
+            try{
+                  var decoded = jwt.verify(accessToken, this.secretKey, { algorithms: ['HS512'] });
+                  return decoded;
+            }
+            catch(error) {
+                  throw new AuthenticationError('Incorrect access token');
+            }            
       }
       async verifyRefreshToken(userId, oldRefreshToken) {
             RefreshToken.checkToken(oldRefreshToken);
 
             const refreshToken = await refreshTokenRepository.read(userId, oldRefreshToken);
-            if(!refreshToken || refreshToken.expirationTime > Date.now())
+            console.log(refreshToken);
+            if(!refreshToken || refreshToken.expirationTime < Date.now())
                   throw new AuthenticationError('Incorrect refresh token');
 
             await refreshTokenRepository.delete(userId, oldRefreshToken);

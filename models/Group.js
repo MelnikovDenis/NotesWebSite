@@ -1,4 +1,8 @@
+import { RequestDataError } from "../errors/CustomErrors.js";
+
 export class Group { 
+    static maxNameLength = 100;
+
     id;
     userId;
     name;
@@ -11,5 +15,18 @@ export class Group {
         this.name = name;
         this.creationTime = creationTime;
         this.lastUpdateTime = lastUpdateTime;
+    }
+
+    static checkId(id) {
+        if(typeof(id) != 'number')
+            throw new RequestDataError('Request body must contain id and id must be a number');
+    }
+    static checkUserId(userId) {
+        if(typeof(userId) != 'number')
+            throw new RequestDataError('Request body must contain userId and userId must be a number');
+    }
+    static checkName(name) {
+        if(typeof(name) != 'string' || name.length > this.maxNameLength)
+            throw new RequestDataError(`Request body must contain name and name must be a string with length <= ${this.maxNameLength}`);
     }
 }

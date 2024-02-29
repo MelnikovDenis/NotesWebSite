@@ -43,32 +43,20 @@ class UserRepository {
     async updateUser(userId, email, password, nickname) {
         const passwordHash = await bcrypt.hash(password, this.saltRounds);
         const paramQuery = {
-            text: 'UPDATE note_user SET user_email = $1, user_nickname = $2, user_password_hash = $3 WHERE user_id = $4 RETURNING *',
+            text: 'UPDATE note_user SET user_email = $1, user_nickname = $2, user_password_hash = $3 WHERE user_id = $4',
             values: [email, nickname, passwordHash, userId]
         };
-        const result = await query(paramQuery);
-        if(result.rowCount > 0)
-            return new User(result.rows[0][0], 
-                result.rows[0][1], 
-                result.rows[0][3], 
-                result.rows[0][2]);
-        else
-            return null;
+        const result = await query(paramQuery);        
+        return result.rowCount;
     }
 
     async deleteUser(userId) {
         const paramQuery = {
-            text: 'DELETE FROM note_user WHERE user_id = $1 RETURNING *',
+            text: 'DELETE FROM note_user WHERE user_id = $1',
             values: [userId]
         };
         const result = await query(paramQuery);
-        if(result.rowCount > 0)
-            return new User(result.rows[0][0], 
-                result.rows[0][1], 
-                result.rows[0][3], 
-                result.rows[0][2]);
-        else
-            return null;
+        return result.rowCount;
     }
 }
 

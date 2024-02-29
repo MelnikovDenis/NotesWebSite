@@ -48,14 +48,7 @@ class RefreshTokenRepository {
                   values: [userId, token]
             };
             const result = await query(paramQuery);
-            if(result.rowCount > 0)
-                  return new RefreshToken(result.rows[0][0], 
-                        result.rows[0][1], 
-                        result.rows[0][2], 
-                        result.rows[0][3], 
-                        result.rows[0][4]);
-            else
-                  return null;
+            return result.rowCount;
       }
 }
 

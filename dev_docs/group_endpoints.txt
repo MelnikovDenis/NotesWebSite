@@ -1,0 +1,61 @@
+POST /groups
+
+input AUTHORIZATION HEADER ("Bearer {accessToken}")
+
+input JSON:
+name: string(100) requared
+
+output JSON:
+id: integer number
+userId: integer number
+name: string(100)
+creationTime: string with timestamp without timezone
+lastUpdateTime: string with timestamp without timezone
+
+
+
+GET /groups
+
+input AUTHORIZATION HEADER ("Bearer {accessToken}")
+
+output JSON:
+array with:
+id: integer number
+userId: integer number
+name: string(100)
+creationTime: string with timestamp without timezone
+lastUpdateTime: string with timestamp without timezone
+
+
+
+GET /groups/:group_id
+
+input AUTHORIZATION HEADER ("Bearer {accessToken}")
+
+output JSON:
+array with:
+id: integer number
+userId: integer number
+name: string(100)
+creationTime: string with timestamp without timezone
+lastUpdateTime: string with timestamp without timezone
+notes: array of notes (id, groupId, title, text, creationTime, lastUpdateTime)
+
+
+
+PUT /groups
+
+input AUTHORIZATION HEADER ("Bearer {accessToken}")
+
+input JSON:
+group_id: integer number requared
+new_name: string(100) requared
+
+
+
+DELETE /groups
+
+input AUTHORIZATION HEADER ("Bearer {accessToken}")
+
+input JSON:
+group_id: integer number requared

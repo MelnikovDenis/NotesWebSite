@@ -1,4 +1,8 @@
+import { RequestDataError } from "../errors/CustomErrors.js";
+
 export class RefreshToken {
+      static maxTokenLength = 50;
+
       id;
       userId;
       token;
@@ -13,7 +17,7 @@ export class RefreshToken {
       }
       
       static checkToken(token) {
-            if(typeof(token) != 'string' || token.length > 50)
-                  throw new RequestDataError('Request cookie must contain refresh token and token must be a string with length <= 50'); 
+            if(typeof(token) != 'string' || token.length > this.maxTokenLength)
+                  throw new RequestDataError(`Request cookie must contain refresh token and token must be a string with length <= ${this.maxTokenLength}`); 
       }
 }
