@@ -1,7 +1,7 @@
 {
-  "name": "notes",
+  "name": "notes_web_api",
   "version": "1.0.0",
-  "description": "Simple website for notes",
+  "description": "Simple web api for notes web site",
   "main": "index.js",
   "type": "module",
   "scripts": {

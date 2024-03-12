@@ -1,0 +1,9 @@
+.notesButton {
+      padding: 5px 15px;
+      margin: 10px 10px 10px 10px;
+      color: red;
+      font-size: 14px;
+      background: transparent;
+      border: 1px solid red;
+      cursor: pointer;
+}
