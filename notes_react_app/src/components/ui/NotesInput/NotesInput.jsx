@@ -1,9 +1,13 @@
 import React from "react";
 import cl from "./NotesInput.module.css"
 
-const NotesInput = (props) => {
+const NotesInput = ({value, onChange, ...props}) => {
       return (
-            <input {...props} className={cl.notesInput}/>
+            <input 
+                  className={cl.notesInput}
+                  value={value} 
+                  onChange={onChange} 
+                  {...props} />
       );
 }
 

@@ -3,13 +3,17 @@ import cl from "./RegisterForm.module.css"
 import NotesInput from "../ui/NotesInput/NotesInput.jsx";
 import NotesButton from "../ui/NotesButton/NotesButton.jsx";
 
-const RegisterForm = () => {
+const RegisterForm = ({email, password, setEmail, setPassword}) => {
+      const onClick = (e) => {
+            e.preventDefault();
+            console.log(`Register: ${email}-${password}`);
+      }
       return (
-            <form className={cl.registerForm}>
-                  <NotesInput type="email" placeholder="Email" />
-                  <NotesInput type="password" placeholder="Пароль" />
-                  <NotesButton type="submit">Зарегистрироваться</NotesButton>
-            </form>
+            <div className={cl.registerForm}>
+                  <NotesInput type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
+                  <NotesInput type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Пароль" />
+                  <NotesButton onClick={onClick} type="submit">Зарегистрироваться</NotesButton>
+            </div>
       );
 }
 

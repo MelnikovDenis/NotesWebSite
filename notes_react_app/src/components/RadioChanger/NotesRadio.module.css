@@ -9,10 +9,6 @@
       margin: 5px 15px;
 }
 
-.notesRadioText.active {
-      color: gray;
-      cursor: pointer;
-      font-size: 18px;
-      margin: 5px 15px;
+.notesRadioText.active {      
       border-bottom: 1px solid red;
 }

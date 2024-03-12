@@ -1,10 +1,29 @@
 import React from "react";
-import cl from "./RadioChanger.module.css";
-import NotesRadio from "../ui/NotesRadio/NotesRadio.jsx";
+import changerCl from "./RadioChanger.module.css";
+import radioCl from "./NotesRadio.module.css";
+
+const NotesRadio = ({children, value, name, checked, onChange}) => {
+      const notesRadioClasses = [radioCl.notesRadioText];
+      if(checked) {
+            notesRadioClasses.push(radioCl.active);
+      }
+
+      return (
+            <label className={notesRadioClasses.join(' ')}>
+                  <input type="radio" 
+                        className={radioCl.notesRadioButton} 
+                        value={value} 
+                        name={name}
+                        checked={checked}
+                        onChange={onChange} />
+                  {children}
+            </label>
+      );    
+}
 
 const RadioChanger = ({options, name, curValue, onChange}) => {
       return (
-            <div className={cl.radioChanger} >
+            <div className={changerCl.radioChanger} >
                   {options.map(option =>                        
                         <NotesRadio 
                               key={option.value}

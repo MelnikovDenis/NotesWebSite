@@ -1,9 +1,9 @@
 import React from "react";
 import cl from "./NotesButton.module.css";
 
-const NotesButton = ({children, ...props}) => {
+const NotesButton = ({children, onClick}) => {
       return (
-            <button {...props} className={cl.notesButton}>
+            <button onClick={onClick} className={cl.notesButton}>
                   {children}
             </button>
       );

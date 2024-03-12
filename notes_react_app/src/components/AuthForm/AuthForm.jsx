@@ -4,7 +4,9 @@ import LoginForm from "../LoginForm/LoginForm.jsx";
 import RadioChanger from "../RadioChanger/RadioChanger.jsx";
 import RegisterForm from "../RegisterForm/RegisterForm.jsx";
 const AuthForm = () => {
-      const [curValue, setCurValue] = useState("login");
+      const [curForm, setCurForm] = useState("login");
+      const [email, setEmail] = useState("");
+      const [password, setPassword] = useState("");
 
       return (
             <div className={cl.authForm} >
@@ -13,11 +15,21 @@ const AuthForm = () => {
                               {value: "login", text: "Вход"}, 
                               {value: "register", text: "Регистрация"}]}
                         name="authRadio"
-                        curValue={curValue}
-                        onChange={e => setCurValue(e.target.value)}
+                        curValue={curForm}
+                        onChange={e => setCurForm(e.target.value)}
                         />
                   {
-                        curValue === "login" ?  <LoginForm /> : <RegisterForm />                 
+                        curForm === "login" ?  
+                        <LoginForm 
+                              email={email} 
+                              password={password} 
+                              setEmail={setEmail}
+                              setPassword={setPassword}/> : 
+                        <RegisterForm
+                              email={email} 
+                              password={password} 
+                              setEmail={setEmail}
+                              setPassword={setPassword}/>               
                   }                 
             </div>
       );
