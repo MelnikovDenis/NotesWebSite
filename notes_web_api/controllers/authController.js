@@ -44,7 +44,7 @@ class AuthController {
                         expires: newRefreshToken.expirationTime, 
                         httpOnly: true, 
                         secure: true });
-                  res.status(200).json(accessToken);
+                  res.status(200).json({id: user.id, email: user.email, accessToken: accessToken});
             }
             catch(error) {
                   next(error);

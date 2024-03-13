@@ -14,7 +14,9 @@ email: string(300) requared
 password: string(30) requared
 
 output text:
-accessToken
+id: integer number
+email: string
+accessToken: string
 
 output cookie:
 refreshToken

@@ -1,4 +1,7 @@
 {
+    "cors": {
+        "origin_white_list": [ "http://localhost:3000" ]
+    },
     "server": {
         "host": "localhost",
         "port": 5000 

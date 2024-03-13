@@ -1,4 +1,4 @@
-import { BaseError, InternalServerError, NotFoundError } from "../errors/CustomErrors.js";
+import { BaseError, InternalServerError } from "../errors/CustomErrors.js";
 
 function sendError(res, customError) {
       res.status(customError.statusCode).json({ error: {name: customError.name, message: customError.message}});            
@@ -14,5 +14,4 @@ export default function errorHandlingMidleware(err, req, res, next) {
             sendError(res, new InternalServerError('Unknown internal server error'));
             return;
       }
-      sendError(res, new NotFoundError('Requested resource was not found'));
 }

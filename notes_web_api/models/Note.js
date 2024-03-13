@@ -2,6 +2,7 @@ import { RequestDataError } from "../errors/CustomErrors.js";
 
 export class Note { 
     static maxTitleLength = 100;
+    static minTitleLength = 1;
     static maxTextLength = 2000;
 
     id;
@@ -29,8 +30,8 @@ export class Note {
             throw new RequestDataError('Request body must contain groupId and userId must be a number');
     }
     static checkTitle(title) {
-        if(typeof(title) != 'string' || title.length > this.maxTitleLength)
-            throw new RequestDataError(`Request body must contain title and title must be a string with length <= ${this.maxTitleLength}`);
+        if(typeof(title) != 'string' || title.length > this.maxTitleLength || title.length < this.minTitleLength)
+            throw new RequestDataError(`Request body must contain title and title must be a string with length in range [${this.minTitleLength}, ${this.maxTitleLength}]`);
     }
     static checkText(text) {
         if(typeof(text) != 'string' || text.length > this.maxTextLength)

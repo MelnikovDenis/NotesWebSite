@@ -4,6 +4,10 @@ export class User {
     static maxNicknameLength = 50;
     static maxPasswordLength = 30;
 
+    static minEmailLength = 2;
+    static minNickNameLength = 2;
+    static minPasswordLength = 8;
+
     id;
     email;
     nickname;
@@ -21,15 +25,15 @@ export class User {
             throw new RequestDataError('Request must contain id and id must be a number');
     }
     static checkEmail(email) {
-        if(typeof(email) != 'string' || email.length > this.maxEmailLength)
-            throw new RequestDataError(`Request must contain email and email must be a string with length <= ${this.maxEmailLength}`);
+        if(typeof(email) != 'string' || email.length > this.maxEmailLength || email.length < this.minEmailLength)
+            throw new RequestDataError(`Request must contain email and email must be a string with length in range [${this.minEmailLength}, ${this.maxEmailLength}]`);
     }
     static checkNickname(nickname) {
-        if(typeof(nickname) != 'string' || nickname.length > this.maxNicknameLength)
-            throw new RequestDataError(`Request must contain nickname and nickname must be a string with length <= ${this.maxNicknameLength}`);
+        if(typeof(nickname) != 'string' || nickname.length > this.maxNicknameLength || nickname.length < this.minNicknameLength)
+            throw new RequestDataError(`Request must contain nickname and nickname must be a string with length in range [${this.minNicknameLength}, ${this.maxNicknameLength}]`);
     }
     static checkPassword(password) {
-        if(typeof(password) != 'string' || password.length > this.maxPasswordLength)
-            throw new RequestDataError(`Request must contain password and password must be a string with length <= ${this.maxPasswordLength}`);
+        if(typeof(password) != 'string' || password.length > this.maxPasswordLength || password.length < this.minPasswordLength)
+            throw new RequestDataError(`Request must contain password and password must be a string with length in range [${this.minPasswordLength}, ${this.maxPasswordLength}]`);
     }
 };

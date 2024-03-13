@@ -1,13 +1,18 @@
 import React from "react";
-import NotesModal from "./components/ui/NotesModal/NotesModal.jsx";
-import AuthForm from "./components/AuthForm/AuthForm.jsx";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import AuthPage from "./pages/AuthPage.jsx";
+import MainPage from "./pages/MainPage.jsx";
 
 function App() {
   return (
     <div className="App">
-      <NotesModal visible={true}>
-        <AuthForm />
-      </NotesModal>
+      <BrowserRouter>
+        <Routes path="/">
+          <Route path="/" element={<AuthPage />} />
+          <Route path="/main" element={<MainPage />} />
+        </Routes>        
+      </BrowserRouter>
+      
     </div>
   );
 }
