@@ -6,13 +6,14 @@ import RegisterForm from "../RegisterForm/RegisterForm.jsx";
 
 const AuthForm = () => {
       const [curForm, setCurForm] = useState("login");
-      const [email, setEmail] = useState("");
-      const [password, setPassword] = useState("");
       const [nickname, setNickname] = useState("");
+      const [email, setEmail] = useState("");
+      const [password, setPassword] = useState("");      
       const [errorText, setErrorText] = useState("");
 
       return (
             <div className={cl.authForm} >
+                  <div className="authFormHeader">NOTES</div>
                   <RadioChanger 
                         options={[
                               {value: "login", text: "Вход"}, 
@@ -34,10 +35,10 @@ const AuthForm = () => {
                         <RegisterForm
                               nickname={nickname}
                               email={email} 
-                              password={password}                           
+                              password={password}
+                              setNickname={setNickname}                         
                               setEmail={setEmail}
-                              setPassword={setPassword}
-                              setNickname={setNickname}
+                              setPassword={setPassword}                              
                               setErrorText={setErrorText} />               
                   }                 
             </div>

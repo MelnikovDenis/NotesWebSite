@@ -1,4 +1,9 @@
 .authForm {
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid red;
+      width: 300px;
+      border-radius: 16px;
 }
