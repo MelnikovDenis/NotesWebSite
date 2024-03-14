@@ -1,3 +1,9 @@
+* {
+      font-family: Arial, Helvetica, sans-serif;
+}
+html body {
+      margin: 0;
+}
 .authContainter {
       width: 100%;
       height: 100%;
@@ -14,14 +20,12 @@
       font-size: 26px;
       letter-spacing: 10px;
       text-align: center;      
-      font-family: Arial, Helvetica, sans-serif;
       color: red;
       margin: 20px 10px;
 }
 
 .errorText {
       font-size: 12px;
-      font-family: Arial, Helvetica, sans-serif;
       text-align: left;
       margin: 5px 10px;
       color: red;
@@ -32,7 +36,6 @@
 
 .successText {
       font-size: 12px;
-      font-family: Arial, Helvetica, sans-serif;
       text-align: left;
       margin: 5px 10px;
       color: green;

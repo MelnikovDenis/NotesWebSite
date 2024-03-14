@@ -16,6 +16,20 @@ creationTime: string with timestamp without timezone
 lastUpdateTime: string with timestamp without timezone
 
 
+GET /groups/:group_id/notes
+
+input AUTHORIZATION HEADER ("Bearer {accessToken}")
+
+output JSON:
+Array of (
+      id: integer number
+      groupId: integer number
+      title: string
+      text: string
+      creationTime: string with timestamp without timezone
+      lastUpdateTime: string with timestamp without timezone
+)
+
 
 GET /notes/:note_id
 

@@ -1,5 +1,6 @@
 import { NotFoundError, AlreadyExistsError } from '../errors/CustomErrors.js';
 import { Note } from '../models/Note.js';
+import { Group } from '../models/Group.js';
 import noteRepository from '../persistence/reposotories/noteRepository.js';
 
 class NoteController {
@@ -42,6 +43,21 @@ class NoteController {
                 throw new NotFoundError('Note was not found');
 
             res.status(200).json(note);
+        }
+        catch(error) {
+            next(error);
+        }
+    }
+
+    async readMany(req, res, next) {
+        try {
+            const groupId = parseInt(req.params['group_id']);
+
+            Group.checkId(groupId);
+
+            const notes = await noteRepository.readNotes(groupId);
+            
+            res.status(200).json(notes);
         }
         catch(error) {
             next(error);

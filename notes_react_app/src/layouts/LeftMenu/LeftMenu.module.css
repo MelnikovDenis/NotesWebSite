@@ -1,0 +1,18 @@
+.body {
+      display: flex;
+      height: 100vh;
+}
+.leftMenu {
+      background-color: #edeef0;
+      padding: 10px;
+}
+.leftMenuHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+}
+.leftMenuTitle {
+      font-size: 26px;      
+      color: red;
+      letter-spacing: 4px;
+}
