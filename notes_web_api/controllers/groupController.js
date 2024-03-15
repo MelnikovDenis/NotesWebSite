@@ -74,7 +74,12 @@ class GroupController {
             res.status(200).send();
         }
         catch(error) {
-            next(error);
+            if(error?.code == '23505')
+                next(new AlreadyExistsError('Group already exist'));
+            else if(error?.code == '23503')
+                next(new NotFoundError('User was not found'));
+            else
+                next(error);
         }
     }
 

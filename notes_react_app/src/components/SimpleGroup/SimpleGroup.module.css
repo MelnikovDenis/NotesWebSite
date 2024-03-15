@@ -2,24 +2,44 @@
       margin: 15px 0px;
       padding: 10px;
       background-color: white;
-      border: 1px solid red;
+      border: 1px solid rgb(249, 76, 76);
+      outline: 1px transparent;
       border-radius: 10px;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: stretch;
+}
+.simpleGroup:hover {
+      border: 1px solid black;
+      outline: 1px solid black;
 }
 .simpleGroupActive {
-      background-color: rgb(255, 68, 68);
+      background-color: rgb(249, 76, 76);
       color: white;
 }
-
+.simpleGroupButtons {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: stretch;
+}
 .simpleGroupLink {     
-      text-decoration: none;  
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
 }
 .simpleGroupName {
-      font-size: 18px;
-      margin-bottom: 8px;   
-      color: red;
+      font-size: 18px;      
+      color: rgb(249, 76, 76);
 }
 .simpleGroupNameActive {
       color: white;
+}
+
+.times {
+      margin-top: 12px;
 }
 .timeValue {
       font-size: 12px;

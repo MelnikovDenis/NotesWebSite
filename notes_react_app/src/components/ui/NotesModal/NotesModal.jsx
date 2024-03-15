@@ -1,7 +1,7 @@
 import React from "react";
 import cl from "./NotesModal.module.css";
 
-const NotesModal = ({children, visible}) => {
+const NotesModal = ({children, visible, setVisible}) => {
 
       const notesModalClasses = [cl.notesModal];
 
@@ -10,8 +10,8 @@ const NotesModal = ({children, visible}) => {
       }
 
       return (
-            <div className={notesModalClasses.join(' ')}>
-                  <div className={cl.notesModalContent}>
+            <div className={notesModalClasses.join(' ')} onClick={() => setVisible(false)}>
+                  <div className={cl.notesModalContent} onClick={(e) => e.stopPropagation()}>
                         {children}
                   </div>
             </div>

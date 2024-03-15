@@ -2,7 +2,7 @@ import api from "../http/api.js";
 
 export default class GroupService {
       static async createGroup(name) {
-            return api.post("/groups", { name: name});
+            return api.post("/groups", { name: name });
       }
       static async readGroups() {            
             return api.get("/groups");
@@ -11,6 +11,6 @@ export default class GroupService {
             return api.put("/groups", {group_id: id, new_name: name});
       }
       static async deleteGroup(id) {
-            return api.delete("/groups", {group_id: id});
+            return api.delete("/groups", {data: {group_id: id}});
       }
 }

@@ -1,8 +1,9 @@
 import React from "react";
 import cl from "./SimpleGroup.module.css";
 import { Link } from "react-router-dom";
+import NotesButton from "../ui/NotesButton/NotesButton.jsx";
 
-const SimpleGroup = ({id, name, creationTime, lastUpdateTime, isActive}) => {
+const SimpleGroup = ({id, name, creationTime, lastUpdateTime, onDelete, onChange, isActive}) => {
       const simpleGroupClasses = [cl.simpleGroup];
       const simpleGroupNameClasses = [cl.simpleGroupName];
       if(isActive) {
@@ -18,7 +19,11 @@ const SimpleGroup = ({id, name, creationTime, lastUpdateTime, isActive}) => {
                               <div className={cl.timeValue}>Время создания: {creationTime}</div>
                               <div className={cl.timeValue}>Время обновления: {lastUpdateTime}</div>
                         </div>
-                  </Link>                                   
+                  </Link>
+                  <div className={cl.simpleGroupButtons}>
+                        <NotesButton onClick={() => onChange(id)}>Изменить</NotesButton>                                  
+                        <NotesButton onClick={() => onDelete(id)}>Удалить</NotesButton>
+                  </div>                                                    
             </div>
       );
 }

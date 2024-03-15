@@ -18,6 +18,6 @@ export default class GroupService {
                   new_text: text});
       }
       static async deleteNote(id) {
-            return api.delete("/notes", {note_id: id});
+            return api.delete("/notes", {data: { note_id: id } });
       }
 }
